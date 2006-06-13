@@ -1,0 +1,30 @@
+ 
+ Frequently Asked Questions (FAQ)
+ dotLua Project
+ H: http://developer.berlios.de/projects/dotlua
+ A: Florian Stinglmayr
+ E: nohero@users.berlios.de
+ D: 13th June 2006
+ ------------------------------------------------------------------------------
+ 
+ 
+ 1. What do I need to do to get dotLua to work?
+ ------------------------------------------------------------------------------
+ 
+ If you downloaded the sources you need to compile it. But if you downloaded
+ the binary package you just have to import the dotLua assembly and always
+ keep the lua_stdcall binary library by it's side.
+ 
+ 
+ 2. What is the lua_stdcall.dll?
+ ------------------------------------------------------------------------------
+ 
+ Read LUA\README.TXT for further information.
+ 
+ 
+ 3. Where is the source code of lua_stdcall.dll?
+ ------------------------------------------------------------------------------
+ 
+ It's not shipped with this package to minimize size. But may download it from
+ the BerliOS project page.
+ 
