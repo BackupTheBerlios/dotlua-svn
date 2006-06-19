@@ -8,7 +8,7 @@ namespace dotLua
 {
     /// <summary>
     /// This class contains native Interop calls to our
-    /// lua_stdcall DLL.
+    /// lua_stdcall DLL. This class is for internal use only.
     /// </summary>
     sealed class NativeLua
     {

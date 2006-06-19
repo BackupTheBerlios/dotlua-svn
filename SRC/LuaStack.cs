@@ -5,14 +5,14 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Implements a LUA stack which can be manipulated
+    /// Allows the manipulation of a given stack frame.
     /// </summary>
     public sealed class LuaStack
     {
         private IntPtr lua = IntPtr.Zero;
 
         /// <summary>
-        /// Constructs a new LUA stack from the given state.
+        /// Constructs a new LUA stack object from the given state.
         /// </summary>
         /// <param name="state">A valid LUA state</param>
         public LuaStack(IntPtr state)
@@ -25,10 +25,11 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Creates a new  LUA stack from the given state and automatically grows it.
+        /// Creates a new  LUA stack from the given state and automatically
+        /// reserves space for a specified amount of items.
         /// </summary>
-        /// <param name="state">A valid LUA state</param>
-        /// <param name="grow">Automatically grows the stack</param>
+        /// <param name="state">A valid LUA state.</param>
+        /// <param name="grow">Grows the stack.</param>
         public LuaStack(IntPtr state, int grow)
             : this(state)
         {
@@ -36,7 +37,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Sets or retrieves the index of the top level item.
+        /// Sets or retrieves the index of the top level item. If set to 0
+        /// the entire stack is being deleted.
         /// </summary>
         public int TopIndex
         {
@@ -51,8 +53,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Retrieves the value which is on top of the stack without
-        /// removing it.
+        /// Retrieves the value of the top level item without removing
+        /// it from the stack.
         /// </summary>
         public object TopValue
         {
@@ -64,6 +66,8 @@ namespace dotLua
 
         /// <summary>
         /// Retrieves the amount of items on the stack.
+        /// <remarks>Since LUA starts counting at 1, the index of the top item and the amount of
+        /// items on the stack is equal. Thus Count only returns the value of TopIndex.</remarks>
         /// </summary>
         public int Count
         {
@@ -74,9 +78,10 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Grows the stack of "size" items.
+        /// Grows the stack for the specified amount of items. The new blanks are filled
+        /// with nils.
         /// </summary>
-        /// <param name="size">Elements to add</param>
+        /// <param name="size">Number of elements to grow the stack.</param>
         public void Grow(int size)
         {
             if (NativeLua.lua_checkstack(lua, size) == 0)
@@ -105,7 +110,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Clears the entire stack.
+        /// Clears the entire stack by setting TopIndex to 0.
         /// </summary>
         public void Clear()
         {
@@ -169,9 +174,9 @@ namespace dotLua
         /// <summary>
         /// Compares two stack items if they are equal.
         /// </summary>
-        /// <param name="index1">First index to compare</param>
-        /// <param name="index2">Second index to compare</param>
-        /// <param name="raw">If true only primitive comparision is being done without using metainformation</param>
+        /// <param name="index1">First index to compare.</param>
+        /// <param name="index2">Second index to compare.</param>
+        /// <param name="raw">If true only primitive comparision is being done without using metainformation.</param>
         /// <returns>True if both are equal</returns>
         public bool Equal(int index1, int index2, bool raw)
         {
@@ -189,7 +194,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Compares two stack items if they are equal.
+        /// Compares two stack items if they are equal without raw
+        /// comparision methods.
         /// </summary>
         /// <param name="index1">First index to compare</param>
         /// <param name="index2">Second index to compare</param>
@@ -259,10 +265,14 @@ namespace dotLua
                         }
                         break;
 
-                    case LuaType.LightUserData:
                     case LuaType.Table:
-                        { // I may event a table object some fine day
-                            // But for now we even take the table into the pointers
+                        {
+                            value = (object)new LuaTable(new Lua(lua), index);
+                        }
+                        break;
+
+                    case LuaType.LightUserData:
+                        { // But for now we even take the table into the pointers
                             value = (NativeLua.lua_topointer(lua, index));
                         }
                         break;

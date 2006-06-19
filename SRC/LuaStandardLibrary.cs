@@ -5,10 +5,10 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Defines some default std library methods.
+    /// dotLUA standard library for LUA.
     /// </summary>
-    [LuaLibrary("1.0.0")]
-    public static class std
+    [LuaLibrary("1.1.0")]
+    public static class System
     {
         /// <summary>
         /// Checks if a specified library with the given version is available and failes
@@ -17,7 +17,7 @@ namespace dotLua
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
-        public static int require(IntPtr state)
+        public static int Require(IntPtr state)
         {
             LuaFunctionArgs arg = new LuaFunctionArgs(state);
             LuaTable lib = null;

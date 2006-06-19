@@ -5,7 +5,7 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Represents a simple table
+    /// Represents a LUA table and provides operations to modify those.
     /// </summary>
     public sealed class LuaTable
     {
@@ -13,10 +13,11 @@ namespace dotLua
         private Lua state = null;
 
         /// <summary>
-        /// Constructs a table that belongs to the given state identified by the given index
+        /// Constructs a table that belongs to the given state identified by the given index on the stack
+        /// of the given state.
         /// </summary>
         /// <param name="state">The associated LUA state</param>
-        /// <param name="index">Index identifying the table</param>
+        /// <param name="index">Index identifying the table.</param>
         public LuaTable(Lua state, int index)
         {
             if (state == null)
@@ -28,7 +29,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the index of the table
+        /// Returns the index of the table.
         /// </summary>
         public int Index
         {
@@ -39,7 +40,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Sets this table
+        /// Sets this table. Setting a table pops the last two items from
+        /// the stack and treats the first as the key and the second as the value.
         /// </summary>
         public void SetTable()
         {
@@ -80,7 +82,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Gets our table
+        /// Gets the table. Getting a table retrieves the key from the stack and pushes
+        /// and pushes the value associated with the key back to the stack.
         /// </summary>
         public void GetTable()
         {
@@ -101,7 +104,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Retrieves a Value and leaves the value on the stack. If the value is a table,
+        /// Retrieves a value and leaves the value on the stack. If the value is a table,
         /// the index of table is being retrieved.
         /// </summary>
         /// <param name="key">Key to query.</param>
@@ -129,10 +132,10 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Converts the given table to a dictionary containing all values
-        /// in the table.
+        /// Converts the given table to a dictionary containing all key/values
+        /// pairs inside a table.
         /// </summary>
-        /// <returns>Dictonary object containing all values from the table.</returns>
+        /// <returns>Dictonary object containing all key/value pairs. from the table.</returns>
         public Dictionary<object, object> ToDictionary()
         {
             Dictionary<object, object> obj = new Dictionary<object, object>();

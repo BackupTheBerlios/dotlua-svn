@@ -29,7 +29,7 @@ namespace dotLua
         /// </summary>
         Boolean = 1,
         /// <summary>
-        /// Light user data, not supported yet.
+        /// Light user data, not yet supported.
         /// </summary>
         LightUserData = 2,
         /// <summary>
@@ -49,11 +49,11 @@ namespace dotLua
         /// </summary>
         Function = 6,
         /// <summary>
-        /// User data, not supported yet.
+        /// User data, not yet supported.
         /// </summary>
         UserData = 7,
         /// <summary>
-        /// A coroutine, not supported yet.
+        /// A coroutine, not yet supported.
         /// </summary>
         Thread = 8
     }

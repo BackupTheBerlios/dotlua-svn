@@ -8,7 +8,8 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// This class can execute LUA scripts
+    /// The core class of the library. It provides public methods to manipulate a given
+    /// LUA state object.
     /// </summary>
     public sealed class Lua : IDisposable
     {
@@ -23,7 +24,8 @@ namespace dotLua
         private int handler = 0; // Index of the error handler
 
         /// <summary>
-        /// Constructs a new LUA intepreter.
+        /// Constructs a new LUA intepreter state and loads standard
+        /// libraries.
         /// </summary>
         public Lua()
         {
@@ -38,7 +40,7 @@ namespace dotLua
             // Load libraries
             LoadLibraries();
             // Load STD library
-            LoadLibrary(typeof(std));
+            LoadLibrary(typeof(System));
             // Register an error handler
             RegisterErrorHandler();
         }
@@ -65,7 +67,7 @@ namespace dotLua
         /// <summary>
         /// Constructs a new LUA state and loads the given script file.
         /// </summary>
-        /// <param name="file">Full path to a script file</param>
+        /// <param name="file">Full qualified path to a script file.</param>
         public Lua(string file)
             : this()
         {
@@ -73,7 +75,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Closes the LUA state.
+        /// Closes the LUA state to clean up all unmanaged handles.
         /// </summary>
         public void Dispose()
         {            
@@ -96,7 +98,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Represents the tables inside this LUA state
+        /// A global collection on the tables within this state.
         /// </summary>
         public LuaTables Tables
         {
@@ -134,7 +136,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the stack for this LUA state.
+        /// Returns the stack frame for this LUA state.
         /// </summary>
         public LuaStack Stack
         {
@@ -228,7 +230,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the internal native handle of the state.
+        /// Returns the internal native handle of the state. This handle can be
+        /// passed to any other native LUA C API.
         /// </summary>
         public IntPtr Handle
         {
@@ -239,10 +242,10 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Loads the given buffer.
+        /// Loads the script from a given string.
         /// </summary>
-        /// <param name="buffer">A script buffer</param>
-        /// <param name="name">Name of the scope, useful for debugging</param>
+        /// <param name="buffer">String containing the LUA script to load.</param>
+        /// <param name="name">Name of the LUA script junk.</param>
         public void Load(string buffer, string name)
         {
             LuaError ret = LuaError.NoError;
@@ -252,7 +255,7 @@ namespace dotLua
         }
            
         /// <summary>
-        /// Loads a script file
+        /// Loads the script from a given file.
         /// </summary>
         public void LoadFile(string file)
         {
@@ -263,7 +266,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Executes the script
+        /// Starts the execution of the previosly loaded script chunks.
         /// </summary>
         public void Execute()
         {
@@ -272,8 +275,7 @@ namespace dotLua
 
 
         /// <summary>
-        /// Executes the script with the amount of arguements and expects
-        /// a specified amount of return parameters back
+        /// Executes the script and expects a specified amount of return parameters back.
         /// </summary>
         /// <param name="returnvalues">Number of return values expected.</param>
         public void Execute(int returnvalues)
@@ -285,7 +287,7 @@ namespace dotLua
         /// Executes the script with the amount of arguements and expects
         /// a specified amount of return parameters back
         /// </summary>
-        /// <param name="arguments">Arguments on the stack for this method.</param>
+        /// <param name="arguments">Arguments passed to the script.</param>
         /// <param name="returnvalues">Returnvalues which should be pushed on the callers stack.</param>
         public void Execute(int returnvalues, params object[] arguments)
         {
@@ -348,6 +350,9 @@ namespace dotLua
         /// </summary>
         /// <param name="name">Name of the function, as it should be available inside the Script</param>
         /// <param name="function">Application defined callback function</param>
+        /// <remarks>To register a callback function in the given namespace, create a new
+        /// variable holding a table. Then insert the callback function into this table to
+        /// retrieve a new namespace.</remarks>
         public void Register(string name, LuaCallbackFunction function)
         {
             if (name == null)
@@ -363,7 +368,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Loads the given assembly as a library for LUA.
+        /// Loads the given file as a library for LUA.
         /// </summary>
         /// <param name="file">Filename or path of the assembly to load.</param> 
         public void LoadLibrary(string file)
@@ -387,7 +392,7 @@ namespace dotLua
         } // LoadFrom
 
         /// <summary>
-        /// Loads a library from the given type
+        /// Loads the given type as a library for LUA.
         /// </summary>
         /// <param name="type">Type of the class to be loaded.</param>
         public void LoadLibrary(Type type)

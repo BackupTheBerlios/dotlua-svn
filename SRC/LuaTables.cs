@@ -5,7 +5,7 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Contains a dictonary of all tables available.
+    /// Contains a container for all tables in a given state.
     /// </summary>
     public sealed class LuaTables
     {
@@ -15,16 +15,7 @@ namespace dotLua
         private LuaTable global = null;
 
         /// <summary>
-        /// Internal enum for special tables
-        /// </summary>
-        private enum SpecialTables
-        {
-            Registry = -10000,      // Registry
-            Global = -10001         // Global
-        }
-
-        /// <summary>
-        /// Returns a table that can be used for internal storage
+        /// Returns a table that can be used for internal storage.
         /// </summary>
         public LuaTable Registry
         {
@@ -35,7 +26,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns a table representing the global namespace
+        /// Returns a table representing the global namespace.
         /// </summary>
         public LuaTable Global
         {
@@ -64,7 +55,7 @@ namespace dotLua
         /// <summary>
         /// Pushes a new table on top of the stack
         /// </summary>
-        /// <returns>Returns the index of the newly created table.</returns>
+        /// <returns>Returns an object of the newly created table.</returns>
         public LuaTable Add()
         {
             int ret = 0;

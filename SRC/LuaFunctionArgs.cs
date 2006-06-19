@@ -6,7 +6,6 @@ namespace dotLua
 {
     /// <summary>
     /// A class which sums up high level functionality for callback routines.
-    /// Copyright (C) by Andreas Lichtenfeldner
     /// </summary>
     public sealed class LuaFunctionArgs
     {
@@ -16,7 +15,8 @@ namespace dotLua
         private LuaStack stack = null;
 
         /// <summary>
-        /// Constructs a new LuaFunctionArgs object from the given state
+        /// Constructs a new LuaFunctionArgs object from the given LUA state. You obtain
+        /// this state via the parameter of your callback routine.
         /// </summary>
         /// <param name="state">State as given through the callback parameter.</param>
         public LuaFunctionArgs(IntPtr state)
@@ -42,7 +42,8 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Finalizes a LUA callback routine.
+        /// Finalizes a LUA callback routine by pushing the return values on the stack and
+        /// returns the amount of return values.
         /// </summary>
         /// <returns>This return value shall also be returned by the callback.</returns>
         public int EndMethod()
@@ -113,7 +114,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the type of the argument specified via index.
+        /// Returns the type of the argument specified via the index.
         /// </summary>
         /// <param name="index">Index of argument to check.</param>
         /// <returns>The type of the argument.</returns>

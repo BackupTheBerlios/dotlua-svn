@@ -6,7 +6,8 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Thrown if an Error occured in the LUA subsystem
+    /// Thrown if an error occures in the LUA subsystem. Any other
+    /// exception thrown by dotLUA derives from this class.
     /// </summary>
     public class LuaException : ApplicationException
     {
@@ -19,7 +20,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Constructs a LuaException object with the given message.
+        /// Constructs a LuaException object with the given error message.
         /// </summary>
         /// <param name="message">A descriptive error message.</param>
         public LuaException(string message)
@@ -28,7 +29,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Constructs a LuaException with the given message and a reference 
+        /// Constructs a LuaException with the given error message and a reference 
         /// to an exception which caused this exception.
         /// </summary>
         /// <param name="message">A descriptive error message.</param>

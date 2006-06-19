@@ -5,7 +5,7 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Thrown if the LUA script has syntax errors
+    /// Thrown if the LUA script has syntax errors.
     /// </summary>
     public sealed class LuaSyntaxException : LuaException
     {

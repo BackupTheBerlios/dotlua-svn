@@ -5,14 +5,15 @@ using System.Text;
 namespace dotLua
 {
     /// <summary>
-    /// Handles the garbage collector. 
+    /// Contains all necessary operations to manipulate a states
+    /// garbage collector.
     /// </summary>
     public sealed class LuaGC
     {
         private Lua state = null;
 
         /// <summary>
-        /// Constructs a new LuaGC 
+        /// Conctructs a new LuaGC instance from the given state.
         /// </summary>
         /// <param name="state">A LUA state.</param>
         public LuaGC(Lua state)
@@ -36,7 +37,7 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Sets or retrieves the garbage collectors threshold in KBytes
+        /// Sets or retrieves the garbage collectors threshold in Kilobytes
         /// </summary>
         public int Threshold
         {
