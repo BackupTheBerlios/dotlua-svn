@@ -2,6 +2,8 @@
  0.3.1 (19, June 2006)
  -----------------------------------------------------
 
+ - Added compiled documentation.
+ - Added SRC\ with ndoc project file.
  - Improved documentation.
  - Improved LuaStack to return a LuaTable when trying
    to access a table.
