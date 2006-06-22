@@ -87,6 +87,17 @@ namespace dotLua
         }
 
         /// <summary>
+        /// Retrieves an object representing the current debug level.
+        /// </summary>
+        public LuaDebug DebugLevel
+        {
+            get
+            { // Return an object for the current debug level
+                return LuaDebug.FromLevel(this, 0);
+            }
+        }
+
+        /// <summary>
         /// Allows operations on the garbage collector of LUA
         /// </summary>
         public LuaGC GC
@@ -130,7 +141,7 @@ namespace dotLua
             {
                 string msg = (string)Stack[1];
                 // Throw new error message
-                throw new LuaSyntaxException(msg + "\r\nStack: " + stack.ToString());
+                throw new LuaException(msg + "\r\nStack: " + stack.ToString());
             }
             return 0;
         }

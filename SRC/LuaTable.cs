@@ -83,7 +83,7 @@ namespace dotLua
 
         /// <summary>
         /// Gets the table. Getting a table retrieves the key from the stack and pushes
-        /// and pushes the value associated with the key back to the stack.
+        /// the value associated with the key back to the stack.
         /// </summary>
         public void GetTable()
         {

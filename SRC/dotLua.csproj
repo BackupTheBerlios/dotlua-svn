@@ -37,9 +37,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lua.cs" />
+    <Compile Include="LuaDebug.cs" />
     <Compile Include="LuaException.cs" />
     <Compile Include="LuaFunctionArgs.cs" />
     <Compile Include="LuaGC.cs" />

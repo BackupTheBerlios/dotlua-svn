@@ -13,6 +13,38 @@ namespace dotLua
     sealed class NativeLua
     {
         private const string dllname = "lua_stdcall.dll";
+
+        private const int LUA_IDSIZE = 60; // internal value
+
+        [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
+        public struct luaDebug
+        {
+            public int _event;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string _name;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string _namewhat;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string _what;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string _source;
+            public int _curline;
+            public int _upvalues;
+            public int _linedef;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst=LUA_IDSIZE)]
+            public string _shortsrc;
+            /*
+             *  here begins internal stuff we don't care about
+             */
+        }
+
+        [DllImport(dllname, CharSet=CharSet.Ansi)]
+        public static extern int lua_getinfo (IntPtr state, string what, ref luaDebug debug);
+
+
+
+        [DllImport(dllname, CharSet = CharSet.Ansi)]
+        public static extern int lua_getstack(IntPtr state, int level, ref luaDebug debug); 
  
         [DllImport(dllname, CharSet = CharSet.Ansi)]
         public static extern IntPtr lua_open();

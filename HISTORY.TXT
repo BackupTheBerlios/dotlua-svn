@@ -1,4 +1,16 @@
 
+ 0.3.9 (22, June 2006)
+ -----------------------------------------------------
+ 
+ - Added a debug interface, that's why we have a huge
+   versioning step here (from 0.3.1 to 0.3.9), which
+   is currently untested. If it is stable it will
+   cause 0.4.0.
+ - Fixed some minor issues, and non consequent things,
+   like throwing of exceptions, error messages.
+ - Updated lua_stdcall.dll to use structure alignment
+   of 1.
+
  0.3.1 (19, June 2006)
  -----------------------------------------------------
 

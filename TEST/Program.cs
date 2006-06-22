@@ -45,16 +45,16 @@ namespace dotLuaTest
             lua.Tables.Global.Push("hello", "world");
             Console.WriteLine(lua.Tables.Global.Pop("hello"));
             Console.WriteLine(lua.Tables.Global.Pop("hello"));*/
-            try
+            //try
             {
                 lua = new Lua("main.lua");
                 lua.LoadLibrary(typeof(Screen));
-                lua.Execute(); 
+                lua.Execute();
             }
-            catch (Exception err)
+            /*catch (Exception err)
             {
                 Console.WriteLine(err.Message);
-            }           
+            } */          
            
             Console.ReadKey();
         }
