@@ -1,0 +1,918 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>dotLua</name>
+    </assembly>
+    <members>
+        <member name="T:dotLua.NativeLua">
+            <summary>
+            This class contains native Interop calls to our
+            lua_stdcall DLL. This class is for internal use only.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaSyntaxException">
+            <summary>
+            Thrown if the LUA script has syntax errors.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaException">
+            <summary>
+            Thrown if an error occures in the LUA subsystem. Any other
+            exception thrown by dotLUA derives from this class.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaException.#ctor">
+            <summary>
+            Constructs an empty LuaException object.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaException.#ctor(System.String)">
+            <summary>
+            Constructs a LuaException object with the given error message.
+            </summary>
+            <param name="message">A descriptive error message.</param>
+        </member>
+        <member name="M:dotLua.LuaException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs a LuaException with the given error message and a reference 
+            to an exception which caused this exception.
+            </summary>
+            <param name="message">A descriptive error message.</param>
+            <param name="innerException">An exception which caused this exception.</param>
+        </member>
+        <member name="M:dotLua.LuaSyntaxException.#ctor(System.String)">
+            <summary>
+            Constructs a LuaSyntaxException object with the given message
+            which details the syntax error.
+            </summary>
+            <param name="message">Descriptive error message.</param>
+        </member>
+        <member name="T:dotLua.LuaDebug">
+            <summary>
+            Interface for providing debug information.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaDebug.#ctor">
+            <summary>
+            Constructs an empty LuaDebug object.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaDebug.RetrieveInfo(System.String)">
+            <summary>
+            Retrieve extended information
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaDebug.FromLevel(dotLua.LuaState,System.Int32)">
+            <summary>
+            Constructs a new LuaDebug object containing information about the given level.
+            Level 0 is the current called function, thereas "level+1" is the level which called "level".
+            </summary>
+            <param name="state">The LUA state.</param>
+            <param name="level">The level to retrieve.</param>
+            <returns>A filled LuaDebug object.</returns>
+        </member>
+        <member name="M:dotLua.LuaDebug.FromFunction(dotLua.Lua,System.String,dotLua.LuaTable)">
+            <summary>
+            Construcs a new LuaDebug object containing information about a non-active
+            function from the given table.
+            <remarks>A debug object from a non-active function does neither have a caller nor a level.</remarks>
+            </summary>
+            <param name="state">The LUA state</param>
+            <param name="name">Name of the function.</param>
+            <param name="table">Table which holds the function.</param>
+            <returns>A filled LuaDebug object.</returns>
+        </member>
+        <member name="P:dotLua.LuaDebug.CurrentLine">
+            <summary>
+            Retrieves the current line of execution.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.Line">
+            <summary>
+            Retrieves the line number where the definition of the function starts. 
+            If no information is available it retrieves -1.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.Source">
+            <summary>
+            Returns the name of the source. If the function was defined in a string
+            the name of the string is being returned. If the function was defined in a file, 
+            then source starts with a '@' followed by the file name. 
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.ShortSource">
+            <summary>
+            A shorter "printable" version of Source.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.What">
+            <summary>
+            Returns the string "Lua" if this is a Lua function, "C" if this is a 
+            callback function, "main" if this is the main part of a chunk, and "tail" 
+            if this was a function that did a tail call. In the latter case, Lua 
+            has no other information about this function. 
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.Name">
+            <summary>
+            Retrieves a reasonable name for the given function. Because functions in Lua are 
+            first class values, they do not have a fixed name: Some functions may be the value
+            of multiple global variables, while others may be stored only in a table field. The 
+            lua_getinfo function checks how the function was called or whether it is the value of
+            a global variable to find a suitable name. If it cannot find a name, then name is set to null. 
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.NameWhat">
+            <summary>
+            Returns an explanation for the "Name" property. The value of namewhat can be "global",
+            "local", "method", "field", or "" (the empty string), according to how the function was called.
+            (Lua uses the empty string when no other option seems to apply.) 
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.UpValues">
+            <summary>
+            Retrieves the number of upvalues of the function. 
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.HasCaller">
+            <summary>
+            Safe check if the current level has a parent level (a caller).
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.Caller">
+            <summary>
+            Returns the parent level (the caller) for the given debug level. If
+            it has been constructed from a given level and the level has a parent it
+            returns a LuaDebug object representing the caller of this level, otherwise
+            a LuaException is being thrown.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaDebug.Level">
+            <summary>
+            Retrieves the level from which the debug object has been created.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaCallbackFunction">
+            <summary>
+            A callback function from LUA to C#.
+            </summary>
+            <param name="state">Current state of the caller.</param>
+            <returns>Should return the number of return values.</returns>
+        </member>
+        <member name="T:dotLua.LuaType">
+            <summary>
+            Available types in LUA.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.None">
+            <summary>
+            Nothing or invalid type.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Nil">
+            <summary>
+            A nil value. Like null in C#.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Boolean">
+            <summary>
+            true/false boolean.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.LightUserData">
+            <summary>
+            Light user data, not yet supported.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Number">
+            <summary>
+            A double precision floating point number.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.String">
+            <summary>
+            A null terminated character array, aka C string.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Table">
+            <summary>
+            A table.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Function">
+            <summary>
+            A callback function.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.UserData">
+            <summary>
+            User data, not yet supported.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaType.Thread">
+            <summary>
+            A coroutine, not yet supported.
+            </summary>
+        </member>
+        <member name="T:dotLua.SpecialTables">
+            <summary>
+            Special tables like global or local environment.
+            </summary>
+        </member>
+        <member name="F:dotLua.SpecialTables.Global">
+            <summary>
+            Global namespace table.
+            </summary>
+        </member>
+        <member name="F:dotLua.SpecialTables.Registry">
+            <summary>
+            A registry which can be used to store internal values.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaError">
+            <summary>
+            Lua errors as returned by call and pcall
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.NoError">
+            <summary>
+            No error occured.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.ErrorRuntime">
+            <summary>
+            Runtime error.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.ErrorFile">
+            <summary>
+            Error reading file.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.ErrorSyntax">
+            <summary>
+            Syntax error.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.ErrorMemory">
+            <summary>
+            Memory error; e.g. not enough memory.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaError.ErrorUnknown">
+            <summary>
+            Unknown internal error.
+            </summary>
+        </member>
+        <member name="T:dotLua.System">
+            <summary>
+            dotLUA standard library for LUA.
+            </summary>
+        </member>
+        <member name="M:dotLua.System.Require(System.IntPtr)">
+            <summary>
+            Checks if a specified library with the given version is available and failes
+            if the version is not installed or not present with the given version.
+            **NOTE**: This method is a quick hack, it is neither efficient nor error perfect.
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotLua.LuaState">
+            <summary>
+            Represents a Lua namespace state.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaState.lua">
+            <summary>
+            The internal state handle.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaState.tables">
+            <summary>
+            The tables associated with the state.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaState.stack">
+            <summary>
+            The stack associated with the state.
+            </summary>
+        </member>
+        <member name="F:dotLua.LuaState.gc">
+            <summary>
+            The garbage collector associated with the state.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaState.#ctor">
+            <summary>
+            Creates a new empty LUA state object.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaState.#ctor(System.IntPtr)">
+            <summary>
+            Creates a new LUA state from the given state. The class will not try load the
+            default libraries for this instance.
+            </summary>
+            <param name="state">An existing LUA state.</param>
+        </member>
+        <member name="M:dotLua.LuaState.Dispose">
+            <summary>
+            Closes the LUA state to clean up all unmanaged handles.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaState.GC">
+            <summary>
+            Allows operations on the garbage collector of LUA
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaState.Tables">
+            <summary>
+            A global collection on the tables within this state.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaState.Stack">
+            <summary>
+            Returns the stack frame for this LUA state.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaState.Handle">
+            <summary>
+            Returns the internal native handle of the state. This handle can be
+            passed to any other native LUA C API.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaTable">
+            <summary>
+            Represents a LUA table and provides operations to modify those.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaTable.#ctor(dotLua.LuaState,System.Int32)">
+            <summary>
+            Constructs a table that belongs to the given state identified by the given index on the stack
+            of the given state.
+            </summary>
+            <param name="state">The associated LUA state</param>
+            <param name="index">Index identifying the table.</param>
+        </member>
+        <member name="M:dotLua.LuaTable.SetTable">
+            <summary>
+            Sets this table. Setting a table pops the last two items from
+            the stack and treats the first as the key and the second as the value.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaTable.SetValue(System.Object)">
+            <summary>
+            Adds the specified key/nil pair to the table.
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:dotLua.LuaTable.SetValue(System.Object,System.Object)">
+            <summary>
+            Adds the specified key/value pair to the table.
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">Value if null nil is being pushed.</param>
+        </member>
+        <member name="M:dotLua.LuaTable.GetTable">
+            <summary>
+            Gets the table. Getting a table retrieves the key from the stack and pushes
+            the value associated with the key back to the stack.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaTable.Pop(System.Object)">
+            <summary>
+            Retrieves a value key/pair from the table and removes the value from the stack.
+            </summary>
+            <param name="key">Key to query.</param>
+            <returns>The value associated with the key. Null if it's nil or does not exist.</returns>
+        </member>
+        <member name="M:dotLua.LuaTable.GetValue(System.Object)">
+            <summary>
+            Retrieves a value and leaves the value on the stack. If the value is a table,
+            the index of table is being retrieved.
+            </summary>
+            <param name="key">Key to query.</param>
+            <returns>The value associated with the key.</returns>
+        </member>
+        <member name="M:dotLua.LuaTable.ToDictionary">
+            <summary>
+            Converts the given table to a dictionary containing all key/values
+            pairs inside a table.
+            </summary>
+            <returns>Dictonary object containing all key/value pairs. from the table.</returns>
+        </member>
+        <member name="P:dotLua.LuaTable.Index">
+            <summary>
+            Returns the index of the table.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaLibrary">
+            <summary>
+            This attribute marks a class to be loaded as a library for LUA. A LUA library is a 
+            class which contains static methods. Any static method which fits the LuaCallbackFunction delegate
+            is being associated to a public table named after the class. The version parameter helps
+            a script to differ between versions of one and the same library.
+            </summary>
+            <example>[LuaLibrary("1.0.0")]
+            class Screen
+            {
+                public static int WriteLine ( IntPtr state )
+                {
+                    // ... code here
+                }
+            }
+            // Results in a public table "Screen" with a member variable containing a function
+            // reference to "WriteLine". Thus it can be accessed as:
+            -- Access inside LUA
+            Screen.WriteLine(some, arguments);</example>
+        </member>
+        <member name="M:dotLua.LuaLibrary.#ctor(System.String)">
+            <summary>
+            Marks the given class or struct as a LUA library.
+            </summary>
+            <param name="version">The version of the library with the format: Major.Minor.Revision</param>
+        </member>
+        <member name="M:dotLua.LuaLibrary.#ctor(System.String,System.String)">
+            <summary>
+            Marks the given class or struct as a LUA library, and associates the given name
+            with the library. Instead of the class name, the given name will be used to name
+            the necessary contructs inside LUA.
+            </summary>
+            <param name="version">The version of the library with the format: Major.Minor.Revision.</param>
+            <param name="name">Name of the library inside LUA.</param>
+        </member>
+        <member name="P:dotLua.LuaLibrary.Version">
+            <summary>
+            Retrieves the version of this library.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaLibrary.Name">
+            <summary>
+            Retrieves the name of the library (if set).
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaFunctionArgs">
+            <summary>
+            A class which sums up high level functionality for callback routines.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaFunctionArgs.#ctor(System.IntPtr)">
+            <summary>
+            Constructs a new LuaFunctionArgs object from the given LUA state. You obtain
+            this state via the parameter of your callback routine.
+            </summary>
+            <param name="state">State as given through the callback parameter.</param>
+        </member>
+        <member name="M:dotLua.LuaFunctionArgs.EndMethod">
+            <summary>
+            Finalizes a LUA callback routine by pushing the return values on the stack and
+            returns the amount of return values.
+            </summary>
+            <returns>This return value shall also be returned by the callback.</returns>
+        </member>
+        <member name="M:dotLua.LuaFunctionArgs.GetArgumentType(System.Int32)">
+            <summary>
+            Returns the type of the argument specified via the index.
+            </summary>
+            <param name="index">Index of argument to check.</param>
+            <returns>The type of the argument.</returns>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.Stack">
+            <summary>
+            Returns the Lua stack associated with the callback.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.State">
+            <summary>
+            Returns the LUA object associated with the callback.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.Arguments">
+            <summary>
+            Returns a global array containing all arguments for the function.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.ArgumentCount">
+            <summary>
+            Returns the number of arguments
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.Item(System.Int32)">
+            <summary>
+            Retrieves the argument with the given index.
+            </summary>
+            <param name="index">Index of the parameter to retrieve.</param>
+            <returns>The value of the parameter.</returns>
+        </member>
+        <member name="P:dotLua.LuaFunctionArgs.ReturnValues">
+            <summary>
+            Sets or retrieves a list of objects that can be filled with return values.
+            </summary>
+        </member>
+        <member name="T:dotLua.Lua">
+            <summary>
+            The core class of the library. It provides public methods to manipulate a given
+            LUA state object.
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.#ctor">
+            <summary>
+            Constructs a new LUA intepreter state and loads standard
+            libraries.
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.#ctor(System.IntPtr)">
+            <summary>
+            Creates a new LUA intepreter from the given state. The class will not try load the
+            default libraries for this instance.
+            </summary>
+            <param name="state">An existing LUA state</param>
+        </member>
+        <member name="M:dotLua.Lua.#ctor(System.String)">
+            <summary>
+            Constructs a new LUA state and loads the given script file.
+            </summary>
+            <param name="file">Full qualified path to a script file.</param>
+        </member>
+        <member name="M:dotLua.Lua.RegisterErrorHandler">
+            <summary>
+            Pushes our own error handler on top of the stack
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.LuaPanic(System.IntPtr)">
+            <summary>
+            Called when LUA panics
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotLua.Lua.LoadLibraries">
+            <summary>
+            This protected method loads the default libraries of LUA
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.CheckError(dotLua.LuaError)">
+            <summary>
+            Checks a return value from a LUA function for an error
+            </summary>
+            <param name="ret"></param>
+        </member>
+        <member name="M:dotLua.Lua.CreateThread">
+            <summary>
+            Creates a new Lua coroutine (thread) from the context of the current object.
+            </summary>
+            <returns>An object representing the new Lua thread.</returns>
+        </member>
+        <member name="M:dotLua.Lua.Load(System.String,System.String)">
+            <summary>
+            Loads the script from a given string.
+            </summary>
+            <param name="buffer">String containing the LUA script to load.</param>
+            <param name="name">Name of the LUA script junk.</param>
+        </member>
+        <member name="M:dotLua.Lua.LoadFile(System.String)">
+            <summary>
+            Loads the script from a given file.
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.Execute">
+            <summary>
+            Starts the execution of the previosly loaded script chunks.
+            </summary>
+        </member>
+        <member name="M:dotLua.Lua.Execute(System.Int32)">
+            <summary>
+            Executes the script and expects a specified amount of return parameters back.
+            </summary>
+            <param name="returnvalues">Number of return values expected.</param>
+        </member>
+        <member name="M:dotLua.Lua.Execute(System.Int32,System.Object[])">
+            <summary>
+            Executes the script with the amount of arguements and expects
+            a specified amount of return parameters back
+            </summary>
+            <param name="arguments">Arguments passed to the script.</param>
+            <param name="returnvalues">Returnvalues which should be pushed on the callers stack.</param>
+        </member>
+        <member name="M:dotLua.Lua.Call(System.String)">
+            <summary>
+            Calls a specified function which is declared inside LUA script.
+            </summary>
+            <param name="function">Name of the function.</param>
+        </member>
+        <member name="M:dotLua.Lua.Call(System.String,System.Int32)">
+            <summary>
+            Calls a specified function which is declared inside LUA script.
+            </summary>
+            <param name="function">Name of the function.</param>
+            <param name="returnvalues">Number of return values expected.</param>
+        </member>
+        <member name="M:dotLua.Lua.Call(System.String,System.Int32,System.Object[])">
+            <summary>
+            Calls a specified function which is declared inside LUA script.
+            </summary>
+            <param name="function">Name of the function.</param>
+            <param name="returnvalues">Number of return values expected.</param>
+            <param name="arguments">Parameters that should be passed to the function.</param>
+        </member>
+        <member name="M:dotLua.Lua.Register(System.String,dotLua.LuaCallbackFunction)">
+            <summary>
+            Registers a callback function. Every callback function is being
+            registered in the global namespace.
+            </summary>
+            <param name="name">Name of the function, as it should be available inside the Script</param>
+            <param name="function">Application defined callback function</param>
+            <remarks>To register a callback function in the given namespace, create a new
+            variable holding a table. Then insert the callback function into this table to
+            retrieve a new namespace.</remarks>
+        </member>
+        <member name="M:dotLua.Lua.LoadLibrary(System.String)">
+            <summary>
+            Loads the given file as a library for LUA.
+            </summary>
+            <param name="file">Filename or path of the assembly to load.</param> 
+        </member>
+        <member name="M:dotLua.Lua.LoadLibrary(System.Reflection.Assembly)">
+            <summary>
+            Loads the given assembly as a library for LUA.
+            </summary>
+            <param name="assembly">Assembly which should be loaded.</param>
+        </member>
+        <member name="M:dotLua.Lua.LoadLibrary(System.Type)">
+            <summary>
+            Loads the given type as a library for LUA.
+            </summary>
+            <param name="type">Type of the class to be loaded.</param>
+        </member>
+        <member name="P:dotLua.Lua.DebugLevel">
+            <summary>
+            Retrieves an object representing the current debug level.
+            </summary>
+        </member>
+        <member name="P:dotLua.Lua.Item(System.String)">
+            <summary>
+            Returns the given global variable.
+            </summary>
+            <param name="key">Name of the variable.</param>
+            <returns>The value of the variable or null if nil or it does not exist.</returns>
+        </member>
+        <member name="T:dotLua.LuaTables">
+            <summary>
+            Contains a container for all tables in a given state.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaTables.#ctor(dotLua.LuaState)">
+            <summary>
+            Constructs a new table collection from the given state.
+            </summary>
+            <param name="state">State</param>
+        </member>
+        <member name="M:dotLua.LuaTables.Add">
+            <summary>
+            Pushes a new table on top of the stack
+            </summary>
+            <returns>Returns an object of the newly created table.</returns>
+        </member>
+        <member name="M:dotLua.LuaTables.Insert(System.Int32)">
+            <summary>
+            Inserts a new table to specified location on the stack.
+            </summary>
+            <param name="index">Location where the new table should be inserted.</param>
+        </member>
+        <member name="M:dotLua.LuaTables.Remove(System.Int32)">
+            <summary>
+            Removes the specified table. 
+            </summary>
+            <param name="index">Table to be removed</param>
+        </member>
+        <member name="P:dotLua.LuaTables.Registry">
+            <summary>
+            Returns a table that can be used for internal storage.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaTables.Global">
+            <summary>
+            Returns a table representing the global namespace.
+            </summary>
+        </member>
+        <member name="T:dotLua.LuaThread">
+            <summary>
+            This class describes a couroutine as used by the LUA library.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaThread.#ctor(dotLua.Lua)">
+            <summary>
+            Creates a new LuaThread object with a new thread out of the context of the given Lua state.
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="M:dotLua.LuaThread.#ctor(System.IntPtr)">
+            <summary>
+            Creates a new LuaThread object and assigns the given state of an already running
+            thread to it.
+            </summary>
+            <param name="state">State of the running thread.</param>
+        </member>
+        <member name="M:dotLua.LuaThread.Resume(System.Int32)">
+            <summary>
+            Starts the execution of the given thread, and waits for the LuaThread to finish
+            it's execution.
+            </summary>
+            <param name="arguments">Number of arguments assigned to the body.</param>
+        </member>
+        <member name="M:dotLua.LuaThread.Resume(System.Object[])">
+            <summary>
+            Calls the routine associated with the thread, and automatically passes the given
+            arguments to the routine.
+            </summary>
+            <param name="arguments">Arguments to pass to the thread routine.</param>
+        </member>
+        <member name="M:dotLua.LuaThread.Yield(System.Int32)">
+            <summary>
+            Stops the execution of the given thread and returns the amount of parameters
+            specified back to the caller of "Resume()".
+            </summary>
+            <param name="results">Number of return values.</param>
+            <returns>If in a C#-Callback use this as your return value.</returns>
+        </member>
+        <member name="M:dotLua.LuaThread.Yield(System.Object[])">
+            <summary>
+            Stops the execution of the thread and returns the specified objects as results
+            of the thread.
+            </summary>
+            <param name="results"></param>
+            <returns>If in a C#-Callback use this as your return value.</returns>
+        </member>
+        <member name="M:dotLua.LuaThread.Move(dotLua.LuaThread,dotLua.LuaThread,System.Int32)">
+            <summary>
+            Pops the amount of values from the stack of the source, and pushes onto the destinations
+            threads stack. This method can be used to transfer values between threads.
+            </summary>
+            <param name="source">Source thread.</param>
+            <param name="destination">Destination thread.</param>
+            <param name="count">Number of arguments to copy.</param>
+        </member>
+        <member name="T:dotLua.LuaStack">
+            <summary>
+            Allows the manipulation of a given stack frame.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaStack.#ctor(dotLua.LuaState)">
+            <summary>
+            Constructs a new LUA stack object from the given state.
+            </summary>
+            <param name="state">A valid LUA state</param>
+        </member>
+        <member name="M:dotLua.LuaStack.#ctor(dotLua.LuaState,System.Int32)">
+            <summary>
+            Creates a new  LUA stack from the given state and automatically
+            reserves space for a specified amount of items.
+            </summary>
+            <param name="state">A valid LUA state.</param>
+            <param name="grow">Grows the stack.</param>
+        </member>
+        <member name="M:dotLua.LuaStack.Grow(System.Int32)">
+            <summary>
+            Grows the stack for the specified amount of items. The new blanks are filled
+            with nils.
+            </summary>
+            <param name="size">Number of elements to grow the stack.</param>
+        </member>
+        <member name="M:dotLua.LuaStack.Pop(System.Int32)">
+            <summary>
+            Removes a specified amount of elements from the top of the stack.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaStack.Pop">
+            <summary>
+            Removes one element from the stack.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaStack.Clear">
+            <summary>
+            Clears the entire stack by setting TopIndex to 0.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaStack.Insert(System.Int32)">
+            <summary>
+            Moves the top item into the given position.
+            </summary>
+            <param name="index">Position</param>
+        </member>
+        <member name="M:dotLua.LuaStack.PushValue(System.Int32)">
+            <summary>
+            Pushes onto the stack a copy of the element at the given index.
+            </summary>
+            <param name="index">The items index which should be copied.</param>
+        </member>
+        <member name="M:dotLua.LuaStack.Replace(System.Int32)">
+            <summary>
+            Replaces the given item with the top element.
+            </summary>
+            <param name="index">Index to replace</param>
+        </member>
+        <member name="M:dotLua.LuaStack.Remove(System.Int32)">
+            <summary>
+            Removes the given object and shifts the items on top down to fill the gap.
+            </summary>
+            <param name="index">Item to be removed</param>
+        </member>
+        <member name="M:dotLua.LuaStack.TypeOf(System.Int32)">
+            <summary>
+            Retrieves the type of the given stack item.
+            </summary>
+            <param name="index">Index of the item</param>
+            <returns>The type of the item</returns>
+        </member>
+        <member name="M:dotLua.LuaStack.Equal(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Compares two stack items if they are equal.
+            </summary>
+            <param name="index1">First index to compare.</param>
+            <param name="index2">Second index to compare.</param>
+            <param name="raw">If true only primitive comparision is being done without using metainformation.</param>
+            <returns>True if both are equal</returns>
+        </member>
+        <member name="M:dotLua.LuaStack.Equal(System.Int32,System.Int32)">
+            <summary>
+            Compares two stack items if they are equal without raw
+            comparision methods.
+            </summary>
+            <param name="index1">First index to compare</param>
+            <param name="index2">Second index to compare</param>
+            <returns>True if both are equal</returns>
+        </member>
+        <member name="M:dotLua.LuaStack.Push">
+            <summary>
+            Pushes a nil value on top of the stack.
+            </summary>
+            <returns>Returns the index of the newly pushed item.</returns>
+        </member>
+        <member name="M:dotLua.LuaStack.Push(System.Object)">
+            <summary>
+            Pushes the given string on top of the stack.
+            </summary>
+            <param name="value">Value to push, if null nil is being pushed.</param>
+            <returns>Returns the index of the newly pushed item.</returns>
+        </member>
+        <member name="M:dotLua.LuaStack.Concat(System.Int32)">
+            <summary>
+            Concenates the count values at the top of the stack, pops them, and leaves the result at the top.
+            </summary>
+            <param name="count">Number of items to concat</param>
+        </member>
+        <member name="P:dotLua.LuaStack.TopIndex">
+            <summary>
+            Sets or retrieves the index of the top level item. If set to 0
+            the entire stack is being deleted.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaStack.TopValue">
+            <summary>
+            Retrieves the value of the top level item without removing
+            it from the stack.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaStack.Count">
+            <summary>
+            Retrieves the amount of items on the stack.
+            <remarks>Since LUA starts counting at 1, the index of the top item and the amount of
+            items on the stack is equal. Thus Count only returns the value of TopIndex.</remarks>
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaStack.Item(System.Int32)">
+            <summary>
+            Retrieves a given item from the stack.
+            </summary>
+            <param name="index">Index of the item to be retrieved</param>
+            <returns>Value of the item</returns>
+        </member>
+        <member name="T:dotLua.LuaGC">
+            <summary>
+            Contains all necessary operations to manipulate a states
+            garbage collector.
+            </summary>
+        </member>
+        <member name="M:dotLua.LuaGC.#ctor(dotLua.LuaState)">
+            <summary>
+            Conctructs a new LuaGC instance from the given state.
+            </summary>
+            <param name="state">A LUA state.</param>
+        </member>
+        <member name="M:dotLua.LuaGC.Collect">
+            <summary>
+            Immediatly runs the garbage collector.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaGC.TotalMemory">
+            <summary>
+            Returns the amount of currently used memory.
+            </summary>
+        </member>
+        <member name="P:dotLua.LuaGC.Threshold">
+            <summary>
+            Sets or retrieves the garbage collectors threshold in Kilobytes
+            </summary>
+        </member>
+    </members>
+</doc>
