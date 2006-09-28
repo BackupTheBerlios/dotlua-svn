@@ -4,6 +4,7 @@
     </assemblies>
     <documenters>
         <documenter name="JavaDoc">
+            <property name="Title" value="dotLua documentation" />
             <property name="OutputDirectory" value=".\doc\" />
         </documenter>
         <documenter name="LaTeX">
@@ -14,7 +15,7 @@
             <property name="TexFileFullPath" value=".\doc\Documentation.tex" />
         </documenter>
         <documenter name="LinearHtml">
-            <property name="OutputDirectory" value=".\doc\" />
+            <property name="OutputDirectory" value="D:\Projekte\dotLua\DOC\" />
             <property name="Title" value="An NDoc Documented Class Library" />
         </documenter>
         <documenter name="MSDN">
@@ -23,14 +24,13 @@
             <property name="Title" value="An NDoc Documented Class Library" />
         </documenter>
         <documenter name="MSDN 2003">
-            <property name="OutputDirectory" value="F:\Projekte\dotLua\DOC\" />
-            <property name="HtmlHelpName" value="dotlua" />
+            <property name="OutputDirectory" value=".\doc\" />
             <property name="Title" value="An NDoc Documented Class Library" />
         </documenter>
         <documenter name="VS.NET 2003">
             <property name="OutputDirectory" value=".\doc\" />
-            <property name="HtmlHelpName" value="Documentation" />
-            <property name="Title" value="An NDoc documented library" />
+            <property name="HtmlHelpName" value="dotLua" />
+            <property name="Title" value="dotLua" />
         </documenter>
         <documenter name="XML">
             <property name="OutputFile" value=".\doc\doc.xml" />
