@@ -27,4 +27,10 @@
  
  It's not shipped with this package to minimize size. But may download it from
  the BerliOS project page.
+
+ 
+ 4. How is dotLua licenced?
+ ------------------------------------------------------------------------------
+
+ It is licence under the new 3 clause BSD licence. See Licence.txt for details.
  

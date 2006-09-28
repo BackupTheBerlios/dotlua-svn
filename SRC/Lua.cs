@@ -11,32 +11,17 @@ namespace dotLua
     /// The core class of the library. It provides public methods to manipulate a given
     /// LUA state object.
     /// </summary>
-    public sealed class Lua : IDisposable
+    public sealed class Lua : LuaState
     {
-        private IntPtr lua = IntPtr.Zero;
-
-        private LuaCallbackFunction panic = null;
-        
-        private LuaStack stack = null;
-        private LuaTables tables = null;
-        private LuaGC gc = null;
-
+        private LuaCallbackFunction panic = null;        
         private int handler = 0; // Index of the error handler
 
         /// <summary>
         /// Constructs a new LUA intepreter state and loads standard
         /// libraries.
         /// </summary>
-        public Lua()
+        public Lua() : base()
         {
-            lua = NativeLua.lua_open();
-            if (lua == IntPtr.Zero)
-            { // Error initializing subsystem
-                throw new LuaException("Error initializing LUA subsystem");
-            }
-            stack = new LuaStack(lua);
-            tables = new LuaTables(this);
-            gc = new LuaGC(this);
             // Load libraries
             LoadLibraries();
             // Load STD library
@@ -50,16 +35,8 @@ namespace dotLua
         /// default libraries for this instance.
         /// </summary>
         /// <param name="state">An existing LUA state</param>
-        public Lua(IntPtr state)
+        public Lua(IntPtr state) : base(state)
         {
-            if (state == IntPtr.Zero)
-            { // Invalid parameter
-                throw new ArgumentException("State must not be zero.", "state");
-            }
-            lua = state;
-            stack = new LuaStack(lua);
-            tables = new LuaTables(this);
-            gc = new LuaGC(this);
             // Register an error handler
             RegisterErrorHandler();
         }
@@ -75,18 +52,6 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Closes the LUA state to clean up all unmanaged handles.
-        /// </summary>
-        public void Dispose()
-        {            
-            if (lua != IntPtr.Zero)
-            { // Close and dispose our object
-                NativeLua.lua_close(lua);
-                lua = IntPtr.Zero;
-            }
-        }
-
-        /// <summary>
         /// Retrieves an object representing the current debug level.
         /// </summary>
         public LuaDebug DebugLevel
@@ -94,28 +59,6 @@ namespace dotLua
             get
             { // Return an object for the current debug level
                 return LuaDebug.FromLevel(this, 0);
-            }
-        }
-
-        /// <summary>
-        /// Allows operations on the garbage collector of LUA
-        /// </summary>
-        public LuaGC GC
-        {
-            get
-            {
-                return gc;
-            }
-        }
-
-        /// <summary>
-        /// A global collection on the tables within this state.
-        /// </summary>
-        public LuaTables Tables
-        {
-            get
-            {
-                return tables;
             }
         }
 
@@ -147,22 +90,11 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the stack frame for this LUA state.
-        /// </summary>
-        public LuaStack Stack
-        {
-            get
-            {
-                return stack;
-            }
-        }
-
-        /// <summary>
         /// Returns the given global variable.
         /// </summary>
         /// <param name="key">Name of the variable.</param>
         /// <returns>The value of the variable or null if nil or it does not exist.</returns>
-        public object this[object key]
+        public object this[string key]
         {
             get
             {
@@ -241,15 +173,14 @@ namespace dotLua
         }
 
         /// <summary>
-        /// Returns the internal native handle of the state. This handle can be
-        /// passed to any other native LUA C API.
+        /// Creates a new Lua coroutine (thread) from the context of the current object.
         /// </summary>
-        public IntPtr Handle
+        /// <returns>An object representing the new Lua thread.</returns>
+        public LuaThread CreateThread()
         {
-            get
-            {
-                return lua;
-            }
+            LuaThread thread = new LuaThread(this);
+
+            return thread;
         }
 
         /// <summary>
@@ -435,7 +366,17 @@ namespace dotLua
                         if (!created)
                         { // The global table correspondending has not been created yet
                             // Push name of the class (for later use)
-                            Stack.Push(type.Name);
+                            string name = "";
+
+                            if (attributes[0].Name != null)
+                            { // The given name shall be used.
+                                name = attributes[0].Name;
+                            }
+                            else
+                            { // Name of the class shall be used
+                                name = type.Name;
+                            }
+                            Stack.Push(name);
                             // Create a new empty table
                             table = Tables.Add();
                             // Mark it as created
@@ -443,6 +384,9 @@ namespace dotLua
 
                             // Save version.
                             table.SetValue("__version", attributes[0].Version); 
+                            // And class name, this allows to identify the class
+                            // even when another name was chosen
+                            table.SetValue("__classname", type.Name);
                         }
                         // Register delegate
                         table.SetValue(info.Name, del);
@@ -452,9 +396,7 @@ namespace dotLua
                 // on top of the stack. If not, well... we are screwed.
                 if (created)
                 {
-                    string stack = Stack.ToString();
                     Tables.Global.SetTable();
-                    stack = Stack.ToString();
                 }
             } // if
             else

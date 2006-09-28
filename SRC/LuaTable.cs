@@ -10,7 +10,7 @@ namespace dotLua
     public sealed class LuaTable
     {
         private int index = 0;
-        private Lua state = null;
+        private LuaState state = null;
 
         /// <summary>
         /// Constructs a table that belongs to the given state identified by the given index on the stack
@@ -18,7 +18,7 @@ namespace dotLua
         /// </summary>
         /// <param name="state">The associated LUA state</param>
         /// <param name="index">Index identifying the table.</param>
-        public LuaTable(Lua state, int index)
+        public LuaTable(LuaState state, int index)
         {
             if (state == null)
             { // Error state must not be null
@@ -150,7 +150,6 @@ namespace dotLua
                 // Pop the value and keep the key for the next iteration
                 state.Stack.Pop();
             }
-            Console.WriteLine(state.Stack.ToString());
 
             return obj;
         }

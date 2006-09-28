@@ -11,7 +11,7 @@ namespace dotLua
     {
         private Array args = null;
         private List<object> ret = new List<object>();
-        private Lua state = null;
+        private LuaState state = null;
         private LuaStack stack = null;
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace dotLua
         /// <summary>
         /// Returns the LUA object associated with the callback.
         /// </summary>
-        public Lua State
+        public LuaState State
         {
             get
             {

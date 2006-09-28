@@ -27,6 +27,7 @@ namespace dotLua
     public class LuaLibrary : Attribute
     {
         private string version = null;
+        private string name = null;
         
         /// <summary>
         /// Marks the given class or struct as a LUA library.
@@ -42,6 +43,23 @@ namespace dotLua
         }
 
         /// <summary>
+        /// Marks the given class or struct as a LUA library, and associates the given name
+        /// with the library. Instead of the class name, the given name will be used to name
+        /// the necessary contructs inside LUA.
+        /// </summary>
+        /// <param name="version">The version of the library with the format: Major.Minor.Revision.</param>
+        /// <param name="name">Name of the library inside LUA.</param>
+        public LuaLibrary(string version, string name)
+        {
+            this.version = version;
+            if (!Regex.IsMatch(version, @"(\d+)\.(\d+)\.(\d+)"))
+            {
+                throw new LuaException("LUA Library version does not have a correct format.");
+            }
+            this.name = name;
+        }
+
+        /// <summary>
         /// Retrieves the version of this library.
         /// </summary>
         public string Version
@@ -49,6 +67,17 @@ namespace dotLua
             get
             {
                 return version;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the name of the library (if set).
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return name;
             }
         }
     }

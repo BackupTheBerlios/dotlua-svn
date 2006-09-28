@@ -9,7 +9,7 @@ namespace dotLua
     /// </summary>
     public sealed class LuaTables
     {
-        private Lua state = null;
+        private LuaState state = null;
 
         private LuaTable registry = null;
         private LuaTable global = null;
@@ -40,7 +40,7 @@ namespace dotLua
         /// Constructs a new table collection from the given state.
         /// </summary>
         /// <param name="state">State</param>
-        public LuaTables(Lua state)
+        public LuaTables(LuaState state)
         {
             if (state == null)
             { // state must not be null

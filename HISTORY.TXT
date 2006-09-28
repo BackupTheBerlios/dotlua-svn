@@ -1,4 +1,21 @@
 
+ 0.4.1 (27, Semtember 2006)
+ -----------------------------------------------------
+
+ - Included threading support.
+ - Rewrote the concept of the LuaState so Lua and
+   LuaThread inherit their functionality from a 
+   superior called "LuaState". It can also be used
+   to abstract threads and the interpreter itself.
+   Most of this functionality is unstable.
+
+ 0.4.0 (3, July 2006)
+ -----------------------------------------------------
+
+ - The debug interface went stable.
+ - Fixed some minor issues and removed some testing
+   code I accidently forgot to remove.
+
  0.3.9 (22, June 2006)
  -----------------------------------------------------
  

@@ -10,7 +10,7 @@ namespace dotLua
     public sealed class LuaDebug
     {
         private NativeLua.luaDebug info;
-        private Lua state = null;
+        private LuaState state = null;
         int level = -1;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace dotLua
         /// <param name="state">The LUA state.</param>
         /// <param name="level">The level to retrieve.</param>
         /// <returns>A filled LuaDebug object.</returns>
-        public static LuaDebug FromLevel(Lua state, int level)
+        public static LuaDebug FromLevel(LuaState state, int level)
         {
             LuaDebug obj = new LuaDebug();
             int ret = 0;

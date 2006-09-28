@@ -15,13 +15,13 @@ namespace dotLua
         /// Constructs a new LUA stack object from the given state.
         /// </summary>
         /// <param name="state">A valid LUA state</param>
-        public LuaStack(IntPtr state)
+        public LuaStack(LuaState state)
         {
-            if (state == IntPtr.Zero)
+            if (state.Handle == IntPtr.Zero)
             { // Invalid state passed
                 throw new ArgumentException("state must not be Zero", "state");
             }
-            lua = state;
+            lua = state.Handle;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace dotLua
         /// </summary>
         /// <param name="state">A valid LUA state.</param>
         /// <param name="grow">Grows the stack.</param>
-        public LuaStack(IntPtr state, int grow)
+        public LuaStack(LuaState state, int grow)
             : this(state)
         {
             Grow(grow);
@@ -261,7 +261,7 @@ namespace dotLua
 
                     case LuaType.Thread:
                         {
-                            value = new Lua(NativeLua.lua_tothread(lua, index));
+                            value = new LuaThread(NativeLua.lua_tothread(lua, index));
                         }
                         break;
 

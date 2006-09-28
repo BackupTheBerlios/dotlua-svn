@@ -188,5 +188,17 @@ namespace dotLua
 
         [DllImport(dllname)]
         public static extern int lua_next(IntPtr state, int index);
+
+        [DllImport(dllname)]
+        public static extern IntPtr lua_newthread(IntPtr state);
+
+        [DllImport(dllname)]
+        public static extern int lua_resume(IntPtr state, int args);
+
+        [DllImport(dllname)]
+        public static extern int lua_yield(IntPtr state, int retvals);
+
+        [DllImport(dllname)]
+        public static extern void lua_xmove(IntPtr source, IntPtr dest, int n);
     }
 }

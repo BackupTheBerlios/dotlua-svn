@@ -46,12 +46,14 @@
     <Compile Include="LuaException.cs" />
     <Compile Include="LuaFunctionArgs.cs" />
     <Compile Include="LuaGC.cs" />
+    <Compile Include="LuaState.cs" />
     <Compile Include="LuaLibrary.cs" />
     <Compile Include="LuaStack.cs" />
     <Compile Include="LuaStandardLibrary.cs" />
     <Compile Include="LuaSyntaxException.cs" />
     <Compile Include="LuaTable.cs" />
     <Compile Include="LuaTables.cs" />
+    <Compile Include="LuaThread.cs" />
     <Compile Include="LuaTypes.cs" />
     <Compile Include="NativeLua.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

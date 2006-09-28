@@ -10,13 +10,13 @@ namespace dotLua
     /// </summary>
     public sealed class LuaGC
     {
-        private Lua state = null;
+        private LuaState state = null;
 
         /// <summary>
         /// Conctructs a new LuaGC instance from the given state.
         /// </summary>
         /// <param name="state">A LUA state.</param>
-        public LuaGC(Lua state)
+        public LuaGC(LuaState state)
         {
             if (state == null)
             { // State must not be null
