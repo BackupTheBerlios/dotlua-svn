@@ -1,0 +1,78 @@
+<html dir="LTR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <title>LuaStack Members</title>
+    <xml>
+    </xml>
+    <link rel="stylesheet" type="text/css" href="MSDN.css" />
+  </head>
+  <body id="bodyID" class="dtBODY">
+    <div id="nsbanner">
+      <div id="bannerrow1">
+        <table class="bannerparthead" cellspacing="0">
+          <tr id="hdr">
+            <td class="runninghead">dotLua Documentation</td>
+            <td class="product">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="TitleRow">
+        <h1 class="dtH1">LuaStack Members
+					</h1>
+      </div>
+    </div>
+    <div id="nstext">
+      <p>
+        <a href="dotLua.LuaStack.html">LuaStack overview</a>
+      </p>
+      <h4 class="dtH4">Public Instance Constructors</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+          <tr VALIGN="top">
+            <td width="50%">
+              <img src="pubmethod.gif" />
+              <a href="dotLua.LuaStackConstructor.html">LuaStack</a>
+            </td>
+            <td width="50%">Overloaded. Initializes a new instance of the LuaStack class.</td>
+          </tr>
+        </table>
+      </div>
+      <h4 class="dtH4">Public Instance Properties</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaStack.Count.html">Count</a></td><td width="50%"> Retrieves the amount of items on the stack. <remarks>Since LUA starts counting at 1, the index of the top item and the amount of items on the stack is equal. Thus Count only returns the value of TopIndex.</remarks></td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaStack.Item.html">Item</a></td><td width="50%"> Retrieves a given item from the stack. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaStack.TopIndex.html">TopIndex</a></td><td width="50%"> Sets or retrieves the index of the top level item. If set to 0 the entire stack is being deleted. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaStack.TopValue.html">TopValue</a></td><td width="50%"> Retrieves the value of the top level item without removing it from the stack. </td></tr></table>
+      </div>
+      <h4 class="dtH4">Public Instance Methods</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Clear.html">Clear</a></td><td width="50%"> Clears the entire stack by setting TopIndex to 0. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Concat.html">Concat</a></td><td width="50%"> Concenates the count values at the top of the stack, pops them, and leaves the result at the top. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Equal_overloads.html">Equal</a></td><td width="50%">Overloaded.  Compares two stack items if they are equal. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassEqualsTopic.htm">Equals</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassGetHashCodeTopic.htm">GetHashCode</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassGetTypeTopic.htm">GetType</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Grow.html">Grow</a></td><td width="50%"> Grows the stack for the specified amount of items. The new blanks are filled with nils. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Insert.html">Insert</a></td><td width="50%"> Moves the top item into the given position. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Pop_overloads.html">Pop</a></td><td width="50%">Overloaded.  Removes a specified amount of elements from the top of the stack. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Push_overloads.html">Push</a></td><td width="50%">Overloaded.  Pushes a nil value on top of the stack. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.PushValue.html">PushValue</a></td><td width="50%"> Pushes onto the stack a copy of the element at the given index. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Remove.html">Remove</a></td><td width="50%"> Removes the given object and shifts the items on top down to fill the gap. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.Replace.html">Replace</a></td><td width="50%"> Replaces the given item with the top element. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassToStringTopic.htm">ToString</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="dotLua.LuaStack.TypeOf.html">TypeOf</a></td><td width="50%"> Retrieves the type of the given stack item. </td></tr></table>
+      </div>
+      <h4 class="dtH4">See Also</h4>
+      <p>
+        <a href="dotLua.LuaStack.html">LuaStack Class</a> | <a href="dotLua.html">dotLua Namespace</a></p>
+    </div>
+  </body>
+</html>

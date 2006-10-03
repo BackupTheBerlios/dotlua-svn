@@ -1,0 +1,46 @@
+<html dir="LTR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <title>Lua.Register Method</title>
+    <xml>
+    </xml>
+    <link rel="stylesheet" type="text/css" href="MSDN.css" />
+  </head>
+  <body id="bodyID" class="dtBODY">
+    <div id="nsbanner">
+      <div id="bannerrow1">
+        <table class="bannerparthead" cellspacing="0">
+          <tr id="hdr">
+            <td class="runninghead">dotLua Documentation</td>
+            <td class="product">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="TitleRow">
+        <h1 class="dtH1">Lua.Register Method </h1>
+      </div>
+    </div>
+    <div id="nstext">
+      <p> Registers a callback function. Every callback function is being registered in the global namespace. </p>
+      <div class="syntax">public <a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/T_System_Void.htm">void</a> Register(<br />   <a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/T_System_String.htm">String</a> <i>name</i>,<br />   <a href="dotLua.LuaCallbackFunction.html">LuaCallbackFunction</a> <i>function</i><br />);</div>
+      <h4 class="dtH4">Parameters</h4>
+      <dl>
+        <dt>
+          <i>String</i>
+        </dt>
+        <dd>Name of the function, as it should be available inside the Script</dd>
+        <dt>
+          <i>LuaCallbackFunction</i>
+        </dt>
+        <dd>Application defined callback function</dd>
+      </dl>
+      <h4 class="dtH4">Remarks</h4>
+      <p>To register a callback function in the given namespace, create a new variable holding a table. Then insert the callback function into this table to retrieve a new namespace.</p>
+      <h4 class="dtH4">See Also</h4>
+      <p>
+        <a href="dotLua.Lua.html">Lua Class</a> | <a href="dotLua.html">dotLua Namespace</a></p>
+    </div>
+  </body>
+</html>

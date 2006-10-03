@@ -1,0 +1,80 @@
+<html dir="LTR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252" />
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5" />
+    <title>LuaDebug Members</title>
+    <xml>
+    </xml>
+    <link rel="stylesheet" type="text/css" href="MSDN.css" />
+  </head>
+  <body id="bodyID" class="dtBODY">
+    <div id="nsbanner">
+      <div id="bannerrow1">
+        <table class="bannerparthead" cellspacing="0">
+          <tr id="hdr">
+            <td class="runninghead">dotLua Documentation</td>
+            <td class="product">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="TitleRow">
+        <h1 class="dtH1">LuaDebug Members
+					</h1>
+      </div>
+    </div>
+    <div id="nstext">
+      <p>
+        <a href="dotLua.LuaDebug.html">LuaDebug overview</a>
+      </p>
+      <h4 class="dtH4">Public Static Methods</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><img src="static.gif" /><a href="dotLua.LuaDebug.FromFunction.html">FromFunction</a></td><td width="50%"> Construcs a new LuaDebug object containing information about a non-active function from the given table. <remarks>A debug object from a non-active function does neither have a caller nor a level.</remarks></td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><img src="static.gif" /><a href="dotLua.LuaDebug.FromLevel.html">FromLevel</a></td><td width="50%"> Constructs a new LuaDebug object containing information about the given level. Level 0 is the current called function, thereas "level+1" is the level which called "level". </td></tr></table>
+      </div>
+      <h4 class="dtH4">Public Instance Constructors</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+          <tr VALIGN="top">
+            <td width="50%">
+              <img src="pubmethod.gif" />
+              <a href="dotLua.LuaDebugConstructor.html">LuaDebug Constructor</a>
+            </td>
+            <td width="50%"> Constructs an empty LuaDebug object. </td>
+          </tr>
+        </table>
+      </div>
+      <h4 class="dtH4">Public Instance Properties</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.Caller.html">Caller</a></td><td width="50%"> Returns the parent level (the caller) for the given debug level. If it has been constructed from a given level and the level has a parent it returns a LuaDebug object representing the caller of this level, otherwise a LuaException is being thrown. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.CurrentLine.html">CurrentLine</a></td><td width="50%"> Retrieves the current line of execution. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.HasCaller.html">HasCaller</a></td><td width="50%"> Safe check if the current level has a parent level (a caller). </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.Level.html">Level</a></td><td width="50%"> Retrieves the level from which the debug object has been created. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.Line.html">Line</a></td><td width="50%"> Retrieves the line number where the definition of the function starts. If no information is available it retrieves -1. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.Name.html">Name</a></td><td width="50%"> Retrieves a reasonable name for the given function. Because functions in Lua are first class values, they do not have a fixed name: Some functions may be the value of multiple global variables, while others may be stored only in a table field. The lua_getinfo function checks how the function was called or whether it is the value of a global variable to find a suitable name. If it cannot find a name, then name is set to null. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.NameWhat.html">NameWhat</a></td><td width="50%"> Returns an explanation for the "Name" property. The value of namewhat can be "global", "local", "method", "field", or "" (the empty string), according to how the function was called. (Lua uses the empty string when no other option seems to apply.) </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.ShortSource.html">ShortSource</a></td><td width="50%"> A shorter "printable" version of Source. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.Source.html">Source</a></td><td width="50%"> Returns the name of the source. If the function was defined in a string the name of the string is being returned. If the function was defined in a file, then source starts with a '@' followed by the file name. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.UpValues.html">UpValues</a></td><td width="50%"> Retrieves the number of upvalues of the function. </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubproperty.gif"></img><a href="dotLua.LuaDebug.What.html">What</a></td><td width="50%"> Returns the string "Lua" if this is a Lua function, "C" if this is a callback function, "main" if this is the main part of a chunk, and "tail" if this was a function that did a tail call. In the latter case, Lua has no other information about this function. </td></tr></table>
+      </div>
+      <h4 class="dtH4">Public Instance Methods</h4>
+      <div class="tablediv">
+        <table class="dtTABLE" cellspacing="0">
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassEqualsTopic.htm">Equals</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassGetHashCodeTopic.htm">GetHashCode</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassGetTypeTopic.htm">GetType</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr>
+<tr VALIGN="top"><td width="50%"><img src="pubmethod.gif"></img><a href="ms-help://MS.VSCC.v80/MS.MSDN.v80/MS.NETDEVFX.v20.en/cpref2/html/SystemObjectClassToStringTopic.htm">ToString</a> (inherited from <b>Object</b>)</td><td width="50%">
+              </td></tr></table>
+      </div>
+      <h4 class="dtH4">See Also</h4>
+      <p>
+        <a href="dotLua.LuaDebug.html">LuaDebug Class</a> | <a href="dotLua.html">dotLua Namespace</a></p>
+    </div>
+  </body>
+</html>
