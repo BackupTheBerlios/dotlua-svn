@@ -1,0 +1,81 @@
+
+
+body
+{
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Georgia;
+	font-size: small;
+}
+
+.header
+{
+	background-color: #1E90FF;
+	border: 0px;
+	border-color: #1E90FF;
+	table-layout: fixed;
+	text-align: left;
+	font-family: Georgia;
+	font-size: x-large;
+}
+
+
+.leftmenu
+{
+	/*background-color: #1E90FF;*/
+	background-color: #FFFFFF;
+	border-width: 1px;
+	border-color: #FFFFFF;
+	table-layout: fixed;
+	text-align: center;
+	font-family: Georgia;
+	font-size: small;
+}
+
+a.leftmenu
+{
+	color: #FFFFFF;
+}
+
+a:hover
+{
+	text-decoration: underline;	
+}
+
+.menuitem
+{
+	background-color: #1E90FF;
+	border-width: 1px;
+	border-color: #FFFFFF;
+	border-style: solid;
+	table-layout: fixed;
+	text-align: center;
+	font-family: Georgia;
+	font-size: small;
+}
+
+a.menuitem
+{
+	color: #FFFFFF;
+}
+
+.invisible
+{
+	background-color: inherit;
+	border-style: hidden;
+}
+
+.cframe
+{
+	background-color: #FFFFFF;
+	width: 100%;
+	height: 100%;
+	height: 500px;
+	border-style: hidden;
+}
+
+a
+{
+	text-decoration:none;
+	color: #4B0082;
+}

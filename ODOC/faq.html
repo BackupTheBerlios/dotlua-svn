@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>The dotLua Project - FAQ</title>
+        <link href="dotlua.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h4>Content:</h4>
+        <ul>
+        <li><a href="#what">What is LUA?</a></li>
+        <li><a href="#dotlua">What is the dotLua project?</a></li>
+        <li><a href="#mod">What does "slightly modified" mean?</a></li>
+        <li><a href="#work">So the callback mechanism works?</a></li>
+        <li><a href="#library">Does dotLua come with its own library engine?</a></li>
+        <li><a href="#cheia">Does dotLua come with its own LUA library, like LUA Cheia?</a></li>
+        <li><a href="#submit">I have written a tutorial/example can I submit it?</a></li>
+        </ul>
+    
+        <a id="what"></a><h4>What is LUA?</h4>
+        <p>LUA is a leightweight, fast, structual scripting language, which is fully garbage collected. For more informations
+        see the <a href="http://www.lua.org" target="_blank">LUA project page</a>.</p>
+    
+        <a id="dotlua"></a><h4>What is the dotLua project?</h4>
+        <p>dotLua is a C# class library which allows C# 2.0 to interact with the LUA scripting engine. 
+        It bases on the original, but slightly modified, LUA C API.</p>
+        
+        <a id="mod"></a><h4>What does "slightly modified" mean?</h4>
+        <p>Short answer: dotLua is not compatible with the existing Win32 builds linked on the LUA project site. dotLua comes
+        with a Windows Dynamic Link Library (DLL) "lua_stdcall.dll", on which it depends on. Neither the LUA language nor
+        it's standard libraries where altered, but we altered the C API so it can be used with C#.</p>
+        
+        <p>Long technical answer: dotLua uses interop services to reach the C API from LUA. In the default built all LUA C API 
+        functions and function pointers are compiled by using the C calling convention. The API functions itself aren't a problem for C#
+        but the callback function pointers are. There is no direct way to marshal a delegate to a function pointer with the C calling
+        convention (cdecl) in C#. Therefore we compiled our own binaries using the standard calling convention (stdcall), and
+        additionaly all C structures were aligned to 1 for easier interopability. </p>
+        
+        <a id="work"></a><h4>So the callback mechanism works?</h4>
+        <p>Yes it does. It is implemented by using delegates. See the online documentation for further details.</p>
+        
+        <a id="library"></a><h4>Does dotLua come with its own library engine?</h4>
+        <p>Yes. dotLua can load classes, either directly, from an assembly, or from a file being an assembly, and automatically
+        create an interface for LUA. See the online documentation for further informations.</p>
+        
+        <a id="cheia"></a><h4>Does dotLua come with its own LUA library, like LUA Cheia?</h4>
+        <p>No. Although this sub project is on the todo list.</p>
+        
+        <a id="submit"></a><h4>I have written a tutorial/example can I submit it?</h4>
+        <p>Oh, please yes! Just send it to <a href="mailto:nohero@users.berlios.de">this email address</a>!</p>
+    </body>
+</html>
